@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>赤水油纸伞 - 非遗科普与互动</title>
+    <style>
+        /* --- 全局古典中国风样式 --- */
+        :root {
+            --primary-red: #8c261a; /* 朱砂红 */
+            --bamboo-green: #4a674f; /* 竹青色 */
+            --paper-white: #fdfbf7; /* 宣纸白 */
+            --ink-black: #2c2c2c; /* 水墨黑 */
+            --card-bg: #ffffff;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            font-family: "PingFang SC", "Lantinghei SC", "Microsoft YaHei", sans-serif;
+            background-color: var(--paper-white);
+            color: var(--ink-black);
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+        }
+
+        /* --- 导航栏 --- */
+        nav {
+            background-color: var(--primary-red);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+        .logo {
+            color: #fff;
+            font-size: 1.3em;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        .nav-links { list-style: none; display: flex; margin: 0; padding: 0; }
+        .nav-links li { margin-left: 25px; }
+        .nav-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 1em;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: #fff; font-weight: bold; }
+
+        /* --- 页面公共组件 --- */
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        
+        .banner {
+            background-position: center;
+            background-size: cover;
+            border-radius: 12px;
+            padding: 60px 40px;
+            color: white;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .banner-history { background: linear-gradient(135deg, #8c261a 0%, #4a120c 100%); }
+        .banner-craft { background: linear-gradient(135deg, #4a674f 0%, #2b3e2e 100%); }
+        .banner::after {
+            content: "非物質文化遺產";
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 2em;
+            opacity: 0.15;
+            writing-mode: vertical-rl;
+            font-family: "SimSun", serif;
+            color: #fff;
+        }
+        .banner h1 { margin: 0 0 15px 0; font-size: 2.2em; letter-spacing: 2px; }
+        .banner p { margin: 0; max-width: 600px; font-size: 1.1em; opacity: 0.9; }
+
+        h2.section-title {
+            color: var(--primary-red);
+            border-left: 5px solid var(--primary-red);
+            padding-left: 15px;
+            margin-top: 40px;
+            font-size: 1.6em;
+        }
+        .craft-title { color: var(--bamboo-green) !important; border-left-color: var(--bamboo-green) !important; }
+
+        .content-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+            margin-bottom: 30px;
+            border: 1px solid #eee4d6;
+        }
+
+        /* --- 历史板块特有样式 --- */
+        .timeline { position: relative; padding-left: 30px; border-left: 2px dashed #d1c7bd; margin: 20px 0; }
+        .timeline-item { position: relative; margin-bottom: 25px; }
+        .timeline-item::before {
+            content: ""; position: absolute; left: -36px; top: 8px;
+            width: 10px; height: 10px; background: var(--primary-red); border-radius: 50%;
+        }
+        .timeline-item strong { color: var(--primary-red); font-size: 1.1em; }
+
+        .geo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .geo-card { background: #fbfbf9; border: 1px solid #e6dfd5; padding: 20px; border-radius: 6px; }
+
+        /* --- 工艺板块特有样式 --- */
+        .step-list { display: flex; flex-direction: column; gap: 20px; }
+        .step-item { display: flex; gap: 20px; background: #fff; border-radius: 8px; padding: 20px; border: 1px solid #e1dad0; }
+        .step-num {
+            background: var(--bamboo-green); color: white; width: 40px; height: 40px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 1.2em; flex-shrink: 0;
+        }
+        .step-detail h4 { margin: 0 0 8px 0; color: var(--bamboo-green); font-size: 1.2em; }
+
+        /* --- 视频区域 --- */
+        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; margin: 20px 0; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+        /* --- 答题系统 --- */
+        .quiz-box { background: #fdfdfd; border: 2px solid #e1dad0; border-radius: 12px; padding: 30px; margin-top: 30px; }
+        .quiz-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #d1c7bd; padding-bottom: 15px; margin-bottom: 20px; }
+        .quiz-title { font-weight: bold; font-size: 1.2em; color: var(--ink-black); }
+        .quiz-progress { color: #666; font-size: 0.9em; }
+        .question-text { font-size: 1.2em; font-weight: bold; margin-bottom: 20px; }
+        .options-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        @media(max-width: 600px) { .options-container { grid-template-columns: 1fr; } }
+        .opt-btn {
+            background: #fff; border: 1px solid #ccc; padding: 15px; border-radius: 6px;
+            font-size: 1em; cursor: pointer; text-align: left; transition: all 0.2s;
+        }
+        .opt-btn:hover { background: #f5f0e6; border-color: var(--primary-red); }
+        .quiz-box.craft-quiz .opt-btn:hover { border-color: var(--bamboo-green); }
+        
+        .opt-btn.correct { background-color: #e6f4ea !important; border-color: #137333 !important; color: #137333; font-weight: bold; }
+        .opt-btn.wrong { background-color: #fce8e6 !important; border-color: #c5221f !important; color: #c5221f; font-weight: bold; }
+
+        .feedback-area { margin-top: 20px; padding: 15px; border-radius: 6px; display: none; line-height: 1.6; }
+        .feedback-area.show { display: block; }
+        .feedback-status { font-weight: bold; margin-bottom: 5px; }
+        .feedback-status.correct-text { color: #137333; }
+        .feedback-status.wrong-text { color: #c5221f; }
+        .explain-text { font-size: 0.95em; color: #555; }
+
+        .action-btn {
+            background: var(--primary-red); color: white; border: none; padding: 12px 30px;
+            font-size: 1em; border-radius: 4px; cursor: pointer; margin-top: 20px; display: none;
+        }
+        .craft-quiz .action-btn { background: var(--bamboo-green); }
+        .action-btn:hover { opacity: 0.9; }
+
+        .result-area { text-align: center; padding: 20px 0; display: none; }
+        .result-score { font-size: 2em; font-weight: bold; color: var(--primary-red); margin: 15px 0; }
+        .craft-quiz .result-score { color: var(--bamboo-green); }
+
+        /* --- 页脚 --- */
+        footer { background-color: #2c2725; color: #aaa; text-align: center; padding: 30px 20px; margin-top: 60px; font-size: 0.9em; border-top: 3px solid var(--primary-red); }
+        footer a { color: #ccc; text-decoration: none; }
+        footer p { margin: 5px 0; }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部导航栏 -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">赤水油纸伞 · 非遗传承</div>
+            <ul class="nav-links">
+                <li><a href="#">首页</a></li>
+                <li><a href="#history-section">油纸伞千年历史</a></li>
+                <li><a href="#craft-section">古法制作工艺</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 主体内容 -->
+    <div class="container">
+
+        <!-- ==================== 一、板块一：油纸伞千年历史专区 ==================== -->
+        <section id="history-section">
+            <div class="banner banner-history">
+                <h1>千年伞韵 —— 油纸伞起源与发展</h1>
+                <p>油纸伞承载着千年的东方美学与匠心。黔北赤水油纸伞因其独特的地理环境与精湛的竹雕竹编工艺，已荣列贵州省级非物质文化遗产名录，成为西南文化的一颗璀璨明珠。</p>
+            </div>
+
+            <h2 class="section-title">1. 起源传说</h2>
+            <div class="content-card">
+                <p>民间传说，油纸伞的创造者为我国木匠鼻祖<strong>鲁班</strong>的妻子<strong>云氏</strong>。相传云氏因见丈夫长年在外劳作，常遭雨淋，便萌发了“收拢如棍，张开如盖”的巧思，她将竹子劈成细条、蒙上兽皮，这便形成了世界上第一把伞的雏形。后人将其改良为纸张并涂刷桐油，演变为流传千年的油纸伞。</p>
+            </div>
+
+            <h2 class="section-title">2. 朝代发展时间线</h2>
+            <div class="content-card">
+                <div class="timeline">
+                    <div class="timeline-item"><strong>先秦时期（雏形现世）：</strong> 主要是丝帛制成的“帷盖”，多为王公贵族遮阳彰显身份的礼仪道具。</div>
+                    <div class="timeline-item"><strong>汉代时期（纸伞诞生）：</strong> 东汉蔡伦改良造纸术后，开始出现以纸张蒙上伞骨、并涂抹植物油防水的真正“油纸伞”。</div>
+                    <div class="timeline-item"><strong>唐宋时期（全民普及）：</strong> 宋代造纸业兴旺，绿油纸伞在民间大为普及，文人墨客开始在伞面题诗作画，使其具备了极高的美学价值。</div>
+                    <div class="timeline-item"><strong>明清时期（工艺成熟）：</strong> 制作工序走向精细化，形成了“七十二道工序”的严格标准，各大流派在全国百花齐放。</div>
+                    <div class="timeline-item"><strong>近现代（赤水传承）：</strong> 贵州赤水油纸伞吸纳了黔北竹艺的精华。2026年的今天，它不仅是防雨工具，更作为文创非遗，走出大山，走向世界。</div>
+                </div>
+            </div>
+
+            <h2 class="section-title">3. 地域油纸伞区分</h2>
+            <div class="content-card">
+                <div class="geo-grid">
+                    <div class="geo-card">
+                        <h3>江南油纸伞</h3>
+                        <p>以秀丽、轻巧著称。伞面多以水墨江南、仕女花鸟为主，极具书卷气和浪漫诗意。</p>
+                    </div>
+                    <div class="geo-card">
+                        <h3>川渝分水油纸伞</h3>
+                        <p>骨架坚固，伞面厚实，耐用性极强，抗风防水性能在西南多雨山地表现优异。</p>
+                    </div>
+                    <div class="geo-card">
+                        <h3>黔北赤水竹骨油纸伞</h3>
+                        <p>精选赤水本地优质楠竹，伞骨处理融入了防霉防蛀的秘方，整体呈现出一种自然、古朴且极其坚韧的少数民族文化融合特征。</p>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-title">4. 文化寓意</h2>
+            <div class="content-card">
+                <p>油纸伞在传统文化中拥有深厚的象征意义：</p>
+                <ul>
+                    <li><strong>吉祥多子：</strong>“油纸”与“有子”谐音；繁体字“傘”字形由多个“人”字组成，寓意多子多福、多子多孙。</li>
+                    <li><strong>婚嫁习俗：</strong>在南方许多地区的传统婚礼中，新娘下轿时媒婆要撑开一把红色油纸伞遮下，寓意避邪趋吉、婚姻圆满。</li>
+                    <li><strong>经典意象：</strong>从戴望舒《雨巷》中那个丁香般的姑娘，到《白蛇传》中许仙与白娘子的西湖断桥借伞，油纸伞早已成为中国古典浪漫不可或缺的视觉图腾。</li>
+                </ul>
+            </div>
+
+            <h2 class="section-title">5. 历史配套视频</h2>
+            <div class="content-card">
+                <p>📌 <strong>图文注解：</strong>下方视频生动再现了油纸伞从远古走来的足迹，特别展示了赤水非遗油纸伞的历史渊源，请点击播放观看：</p>
+                <div class="video-wrapper">
+                    <!-- 嵌入用户指定的B站视频 BV1Tf4y1d7ca -->
+                    <iframe src="//player.bilibili.com/player.html?bvid=BV1Tf4y1d7ca&page=1&high_quality=1&danmaku=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+                </div>
+            </div>
+
+            <!-- 历史趣味问答 -->
+            <div class="quiz-box history-quiz" id="history-quiz-root">
+                <div class="quiz-header">
+                    <span class="quiz-title">📜 历史知识答题区（二选一）</span>
+                    <span class="quiz-progress" id="h-progress">第 1 / 15 题</span>
+                </div>
+                <div id="h-quiz-game">
+                    <div class="question-text" id="h-question">题目加载中...</div>
+                    <div class="options-container" id="h-options">
+                        <!-- 按钮动态生成 -->
+                    </div>
+                    <div class="feedback-area" id="h-feedback">
+                        <div class="feedback-status" id="h-status"></div>
+                        <div class="explain-text" id="h-explain"></div>
+                    </div>
+                    <button class="action-btn" id="h-next-btn" onclick="HistoryQuiz.next()">下一题</button>
+                </div>
+                <div class="result-area" id="h-result">
+                    <h3>挑战结束！</h3>
+                    <div class="result-score">得分：<span id="h-score">0</span> / 15</div>
+                    <p id="h-eval"></p>
+                    <button class="action-btn" style="display:inline-block;" onclick="HistoryQuiz.restart()">重新挑战</button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==================== 二、板块二：古法制作工艺专区 ==================== -->
+        <section id="craft-section" style="margin-top: 80px;">
+            <div class="banner banner-craft">
+                <h1>百道手工 —— 赤水油纸伞完整制作工艺</h1>
+                <p>赤水油纸伞历经百年沉淀，时至今日依然坚守全手工制作。劈竹、排伞、裱纸、手绘、上油……上百道细微工序无一能被现代机械完全替代，是用时光与指尖雕琢的纯粹匠心。</p>
+            </div>
+
+            <h2 class="section-title craft-title">1. 原料选材</h2>
+            <div class="content-card">
+                <p>赤水油纸伞的坚韧长寿，源于对大自然近乎苛刻的选材：</p>
+                <ul>
+                    <li><strong>3年以上老楠竹：</strong>必须选用赤水深山中生长3-5年、经受过风霜的成年楠竹，其纤维密度高、韧性极佳，能保证骨架历经万次开合而不折断。</li>
+                    <li><strong>高韧性皮纸（棉纸）：</strong>伞面采用特制的手工棉纸，拉力强、遇水不易破烂，吸墨吸油性能卓越。</li>
+                    <li><strong>天然熟桐油：</strong>这是赋予油纸伞防水灵魂的关键。将天然桐树果实榨出的生桐油经过熬制变成熟桐油，涂刷后会形成一层坚硬透亮的保护膜。</li>
+                </ul>
+            </div>
+
+            <h2 class="section-title craft-title">2. 五大工序分步详解</h2>
+            <div class="content-card">
+                <div class="step-list">
+                    <div class="step-item">
+                        <div class="step-num">1</div>
+                        <div class="step-detail">
+                            <h4>制伞骨（骨架挺拔之源）</h4>
+                            <p>工艺包含：砍竹、泡水去糖（防止日后生虫发霉）、刮去绿色表皮、精准破竹削成粗细一致的细丝。随后进行复杂的打孔与开槽，确保伞骨错落有致。</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-num">2</div>
+                        <div class="step-detail">
+                            <h4>组装伞架（精巧结构成型）</h4>
+                            <p>将长伞骨与短伞骨用坚韧的棉线一一穿绕串联，固定在伞杆与伞托上。这个过程需要匠人极度匀称的手劲，保证伞架能够平稳开合、受力均匀。</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-num">3</div>
+                        <div class="step-detail">
+                            <h4>裱糊伞面（薄如蝉翼的贴合）</h4>
+                            <p>把高韧性的手工棉纸按照伞架的扇形切块。匠人一边转动伞架，一边将棉纸多层重叠裱糊在骨架上。浆糊要涂得薄而均匀，裱好后置于通风处自然阴干。</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-num">4</div>
+                        <div class="step-detail">
+                            <h4>手绘纹样（伞面美学升华）</h4>
+                            <p>阴干后的白纸伞面就成了匠人的画布。赤水艺人手持画笔，在带有弧度的伞面上手工绘制山水、花鸟或富有黔北少数民族特色的吉祥图腾，赋予伞生命力。</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-num">5</div>
+                        <div class="step-detail">
+                            <h4>刷桐油（防水耐用的蜕变）</h4>
+                            <p>在画好的伞面上反复均匀地涂刷多层熬制好的熟桐油。刷完油的伞面会由白变透明，展现出迷人的光泽，这也是油纸伞能够真正防雨、越用越坚韧的终极秘诀。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-title craft-title">3. 工艺配套视频</h2>
+            <div class="content-card">
+                <p>📌 <strong>实实拍镜头：</strong>下方视频展示了匠人们砍竹、削骨、裱纸及刷桐油的真实劳作场景，可对照上方五大步骤仔细观摩体会：</p>
+                <div class="video-wrapper">
+                    <!-- 嵌入视频工艺相关实拍片段 -->
+                    <iframe src="//player.bilibili.com/player.html?bvid=BV1Tf4y1d7ca&page=1&high_quality=1&danmaku=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+                </div>
+            </div>
+
+            <!-- 工艺趣味问答 -->
+            <div class="quiz-box craft-quiz" id="craft-quiz-root">
+                <div class="quiz-header">
+                    <span class="quiz-title" style="color:var(--bamboo-green)">🎋 古法工艺答题区（二选一）</span>
+                    <span class="quiz-progress" id="c-progress">第 1 / 15 题</span>
+                </div>
+                <div id="c-quiz-game">
+                    <div class="question-text" id="c-question">题目加载中...</div>
+                    <div class="options-container" id="c-options">
+                        <!-- 按钮动态生成 -->
+                    </div>
+                    <div class="feedback-area" id="c-feedback">
+                        <div class="feedback-status" id="c-status"></div>
+                        <div class="explain-text" id="c-explain"></div>
+                    </div>
+                    <button class="action-btn" id="c-next-btn" onclick="CraftQuiz.next()">下一题</button>
+                </div>
+                <div class="result-area" id="c-result">
+                    <h3>挑战结束！</h3>
+                    <div class="result-score">得分：<span id="c-score">0</span> / 15</div>
+                    <p id="c-eval"></p>
+                    <button class="action-btn" style="display:inline-block;" onclick="CraftQuiz.restart()">重新挑战</button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <p>📋 素材来源：国家级/省级非物质文化遗产公开名录、赤水油纸伞工艺考证资料、Bilibili视频（BV1Tf4y1d7ca）</p>
+        <p>🏛️ 科普说明：本网站旨在向公众传播和普及非遗油纸伞的历史演变与传统手作工艺，保护和弘扬中华优秀传统非遗文化。</p>
+        <p>© 2026 非遗油纸伞科普传播平台. 匠心守护，世代相传。</p>
+    </footer>
+
+    <!-- ==================== 后台 JavaScript 核心逻辑 ==================== -->
+    <script>
+        // ------------------ 1. 题库数据（历史15题 + 工艺15题） ------------------
+        const historyQuestions = [
+            { q: "民间传说中，油纸伞最早是由谁的妻子云氏发明的？", o: ["A. 鲁班", "B. 杜康"], c: 0, e: "传说木匠鼻祖鲁班的妻子云氏为了让丈夫不被雨淋，发明了最早能收拢的伞骨与兽皮伞。" },
+            { q: "油纸伞在我国哪个朝代开始实现了真正“全民普及”进入寻常百姓家？", o: ["A. 先秦", "B. 唐宋"], c: 1, e: "唐宋时期造纸业大发展，油纸伞走入民间，绿油纸伞在宋代街头随处可见。" },
+            { q: "贵州赤水油纸伞目前属于哪一级非物质文化遗产名录？", o: ["A. 贵州省级非遗", "B. 县级传统工艺"], c: 0, e: "黔北赤水油纸伞工艺独特、文化底蕴深厚，已荣列贵州省级非物质文化遗产名录。" },
+            { q: "传统婚嫁习俗中，新娘下轿时媒婆撑开红色油纸伞的主要寓意是？", o: ["A. 遮阳防晒", "B. 避邪趋吉、婚姻美满"], c: 1, e: "红色油纸伞在传统婚礼中具有驱邪、多子多福和生活红火美满的吉祥象征。" },
+            { q: "繁体字“傘”之所以在民间有“多子多福”的寓意，主要是因为什么？", o: ["A. 伞字结构里有很多“人”字", "B. 伞的骨架数量非常多"], c: 0, e: "繁体“傘”字底下有多个“人”字，古人借此谐音和字形，赋予它多子多福、人丁兴旺的含义。" },
+            { q: "戴望舒的现代诗《雨巷》中，姑娘撑着油纸伞走过的经典场景是？", o: ["A. 塞外大漠", "B. 江南寂寥的雨巷"], c: 1, e: "经典诗作《雨巷》中，姑娘撑着油纸伞默默走过幽深、寂寥的江南青石板长巷。" },
+            { q: "“油纸伞”常在送别和新婚时作为礼品，因其名字发音与以下哪个词谐音？", o: ["A. 有子", "B. 游子"], c: 0, e: "在南方方言中，“油纸”与“有子”发音极其相近，寓意新婚早生贵子。" },
+            { q: "在《白蛇传》中，许仙与白娘子结缘的著名定情道具是？", o: ["A. 一把西湖油纸伞", "B. 一枚传家玉佩"], c: 0, e: "断桥相遇，借伞还伞，一把红色的油纸伞成为了民间传说《白蛇传》中最经典的爱情纽带。" },
+            { q: "在纸伞诞生之前，先秦时期的伞主要是由什么贵重材料制成的？", o: ["A. 塑料薄膜", "B. 丝帛"], c: 1, e: "先秦时期造纸术尚未发明，当时多用贵重的丝帛制作华丽的“帷盖”，多用于王公贵族。" },
+            { q: "下列哪个地域的油纸伞工艺，以将黔北竹艺融入骨架制作、防霉防蛀见长？", o: ["A. 黔北赤水油纸伞", "B. 江南水乡纸伞"], c: 0, e: "黔北赤水油纸伞地处中国竹子之乡，充分利用本地楠竹，在防霉防蛀、坚韧度上独树一帜。" },
+            { q: "油纸伞伞骨呈辐射状散开，在传统文化中常用来象征什么？", o: ["A. 步步高升", "B. 阖家团圆、圆满聚合"], c: 1, e: "油纸伞张开后呈现完美的圆形，象征着圆满、团聚以及家庭平安和乐。" },
+            { q: "汉代发明了纸张后，匠人们在纸面上涂抹了什么，才完成了真正现代意义的油纸伞？", o: ["A. 熟植物油", "B. 动物猪油"], c: 0, e: "匠人利用桐油等熟植物油具有的天然防水性，将其刷在皮纸上，才诞生了真正的防雨纸伞。" },
+            { q: "江南油纸伞在外形上往往带有什么样的气质？", o: ["A. 粗犷厚实", "B. 秀丽轻巧、书卷气浓"], c: 1, e: "江南油纸伞精细轻盈，伞面多绘水墨山水，常给人以温婉灵动、富有诗意的美感。" },
+            { q: "明清时期油纸伞制作手艺达到了顶峰，民间常说的“工序数量”是多少？", o: ["A. 24道工序", "B. 72道工序"], c: 1, e: "古法油纸伞工艺复杂，行业公认需要经历大大小小“七十二道工序”方能大功告成。" },
+            { q: "赤水油纸伞在现代发展中，除了作为日用防雨工具，目前更突出的角色是？", o: ["A. 机械化大工业产品", "B. 文化旅游和非遗文创作品"], c: 1, e: "赤水油纸伞因其精湛的手工与美学价值，在当代已转型为深受欢迎的非遗文创与艺术藏品。" }
+        ];
+
+        const craftQuestions = [
+            { q: "赤水油纸伞选用的楠竹，一般需要在深山里生长至少多少年？", o: ["A. 1年的新竹", "B. 3-5年的老楠竹"], c: 1, e: "选材必须是3-5年的成年老竹。太嫩水分多易变形，太老则容易变脆，3-5年韧性最佳。" },
+            { q: "“制伞骨”的过程中，把竹子砍下来后为什么要进行“泡水去糖”处理？", o: ["A. 为了让竹子变甜", "B. 为了防霉防蛀，防止日后生虫"], c: 1, e: "楠竹内部含有糖分，不经过泡水脱脂去糖，日后极易招引蛀虫或在潮湿天气下发霉烂骨。" },
+            { q: "在制作伞架时，将长短伞骨串联固定在一起所使用的传统材料是？", o: ["A. 金属铁丝", "B. 韧性棉线逐孔手工穿绕"], c: 1, e: "传统古法用富有韧性的棉线和线网，手工将几十根竹骨穿绕，这样开合时才有弹性且不会生锈。" },
+            { q: "裱糊伞面所使用的高韧性棉纸（皮纸），它的主要特点是？", o: ["A. 遇水即烂", "B. 纤维长、拉力强、吸油吸墨"], c: 1, e: "手工棉纸采用天然植物纤维制成，纤维极长极有韧性，刷上桐油后不仅不烂，反而更加结实。" },
+            { q: "手绘伞面纹样是在什么时候进行的？", o: ["A. 纸面裱好阴干后、刷桐油之前", "B. 全套工序做完，伞油干透之后"], c: 0, e: "必须在棉纸裱糊好并完全自然阴干后作画。如果先刷了桐油，伞面产生防水层，墨汁和颜料就无法附着了。" },
+            { q: "油纸伞之所以薄如蝉翼却能防雨，关键是在伞面上涂刷了什么？", o: ["A. 熬制好的熟桐油", "B. 现代透明高分子胶水"], c: 0, e: "熟桐油是天然的防水防腐涂料，涂刷多层干透后，会在伞面结成坚固的半透明防水膜。" },
+            { q: "下列哪项属于“制伞骨”的核心步骤之一？", o: ["A. 刮青与破竹削骨", "B. 缝制伞套"], c: 0, e: "制伞骨需要将原竹进行刮青（去掉绿色表皮）、精准劈开成细细的伞骨并打孔削光。" },
+            { q: "古法油纸伞的制作过程中，有没有使用现代化全自动机械代替的步骤？", o: ["A. 有，伞骨全部是机器切出来的", "B. 没有，所有核心工序至今仍依赖纯手工"], c: 1, e: "赤水油纸伞至今坚守全手工无机械化替代，劈竹、穿线、手绘、上油均需匠人的双手经验控温控力。" },
+            { q: "刷桐油时，一般需要怎么操作才能保证其卓越的防水耐用性？", o: ["A. 随便敷衍刷一遍即可", "B. 反复、均匀地涂刷多层"], c: 1, e: "刷油需要匠人极具耐心地反复、均匀涂刷多层，确保每一处棉纸都吃透桐油，才能做到滴水不漏。" },
+            { q: "裱糊伞面时，多块扇形棉纸之间的黏合剂是？", o: ["A. 传统调制的特制浆糊", "B. 工业502快干胶"], c: 0, e: "传统工艺使用特制的环保天然浆糊进行裱糊，它与棉纸、桐油相容性好，干后不会发硬碎裂。" },
+            { q: "组装好伞架后，要确保伞能完美“收拢”和“撑开”，对匠人有什么要求？", o: ["A. 拼的是力气大", "B. 每一根伞骨受力与棉线松紧必须完全匀称"], c: 1, e: "这是细活，长短骨交叉点受力必须绝对均衡，棉线松紧一致，稍有偏差伞就会歪斜或无法合拢。" },
+            { q: "赤水油纸伞手绘的图案，通常选用什么风格的题材？", o: ["A. 中国古典花鸟山水或吉祥图腾", "B. 西方抽象几何立体画"], c: 0, e: "作为中国非物质文化遗产，其伞面图案深植于中国传统美学，以山水、花鸟及传统吉祥图腾为主。" },
+            { q: "刚裱糊完浆糊的伞面，应该如何处理？", o: ["A. 放在烈日下暴晒爆烤", "B. 放在通风处自然阴干"], c: 1, e: "必须放置在阴凉通风处让其自然阴干。如果直接用烈日暴晒，纸面迅速收缩会导致骨架变形、纸面开裂。" },
+            { q: "天然生桐油是不能直接刷伞的，制作时必须将其熬制成？", o: ["A. 熟桐油", "B. 固体桐树脂"], c: 0, e: "生桐油干燥极慢且无法形成坚硬的保护膜，必须经过大火和文火的科学熬制变成“熟桐油”方能使用。" },
+            { q: "在“制伞骨”中，削骨匠人将竹子破开成几十根细竹条，主要考验的是？", o: ["A. 匠人极为精准的眼力与刀功", "B. 现代数控机床的精度"], c: 0, e: "全凭匠人常年累月积累的手感与刀功，不经测量却能将一根竹筒劈出粗细、宽窄近乎完全一致的几十根伞骨。" }
+        ];
+
+        // ------------------ 2. 面向对象的答题系统引擎 ------------------
+        class NonFactorQuiz {
+            constructor(questions, rootId, prefix) {
+                this.questions = questions;
+                this.root = document.getElementById(rootId);
+                this.prefix = prefix;
+                this.currentIndex = 0;
+                this.score = 0;
+                this.hasAnswered = false;
+                
+                // 绑定DOM
+                this.domProgress = document.getElementById(`${prefix}-progress`);
+                this.domQuestion = document.getElementById(`${prefix}-question`);
+                this.domOptions = document.getElementById(`${prefix}-options`);
+                this.domFeedback = document.getElementById(`${prefix}-feedback`);
+                this.domStatus = document.getElementById(`${prefix}-status`);
+                this.domExplain = document.getElementById(`${prefix}-explain`);
+                this.domNextBtn = document.getElementById(`${prefix}-next-btn`);
+                this.domGameView = document.getElementById(`${prefix}-quiz-game`);
+                this.domResultView = document.getElementById(`${prefix}-result`);
+                this.domScoreSpan = document.getElementById(`${prefix}-score`);
+                this.domEvalP = document.getElementById(`${prefix}-eval`);
+            }
+
+            init() {
+                this.currentIndex = 0;
+                this.score = 0;
+                this.domGameView.style.display = 'block';
+                this.domResultView.style.display = 'none';
+                this.renderQuestion();
+            }
+
+            renderQuestion() {
+                this.hasAnswered = false;
+                this.domFeedback.classList.remove('show');
+                this.domNextBtn.style.display = 'none';
+                
+                const currentData = this.questions[this.currentIndex];
+                this.domProgress.innerText = `第 ${this.currentIndex + 1} / ${this.questions.length} 题`;
+                this.domQuestion.innerText = `${this.currentIndex + 1}. ${currentData.q}`;
+                
+                this.domOptions.innerHTML = '';
+                currentData.o.forEach((option, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'opt-btn';
+                    btn.innerText = option;
+                    btn.onclick = () => this.checkAnswer(idx, btn);
+                    this.domOptions.appendChild(btn);
+                });
+            }
+
+            checkAnswer(selectedIdx, clickedBtn) {
+                if (this.hasAnswered) return;
+                this.hasAnswered = true;
+                
+                const currentData = this.questions[this.currentIndex];
+                const allButtons = this.domOptions.querySelectorAll('.opt-btn');
+                
+                // 禁用所有选项
+                allButtons.forEach(btn => btn.disabled = true);
+                
+                if (selectedIdx === currentData.c) {
+                    this.score++;
+                    clickedBtn.classList.add('correct');
+                    this.domStatus.className = 'feedback-status correct-text';
+                    this.domStatus.innerText = '︎ 答对了！';
+                } else {
+                    clickedBtn.classList.add('wrong');
+                    allButtons[currentData.c].classList.add('correct'); // 高亮正确答案
+                    this.domStatus.className = 'feedback-status wrong-text';
+                    this.domStatus.innerText = ' 答错了~';
+                }
+                
+                this.domExplain.innerText = currentData.e;
+                this.domFeedback.classList.add('show');
+                this.domNextBtn.style.display = 'inline-block';
+            }
+
+            next() {
+                this.currentIndex++;
+                if (this.currentIndex < this.questions.length) {
+                    this.renderQuestion();
+                } else {
+                    this.showResult();
+                }
+            }
+
+            showResult() {
+                this.domGameView.style.display = 'none';
+                this.domResultView.style.display = 'block';
+                this.domScoreSpan.innerText = this.score;
+                
+                let evalText = '';
+                if (this.score === 15) {
+                    evalText = '太不可思议了！你对非遗油纸伞文化简直是全知全能，恭喜获得【首席非遗传承官】称号！';
+                } else if (this.score >= 10) {
+                    evalText = '非常优秀！你已经基本掌握了油纸伞的核心常识，是个合格的【文化推广大使】！';
+                } else {
+                    evalText = '没关系，非遗手艺博大精深。再次阅读上面的科普图文与实拍视频，相信下次你一定能拿满分！';
+                }
+                this.domEvalP.innerText = evalText;
+            }
+
+            restart() {
+                this.init();
+            }
+        }
+
+        // ------------------ 3. 实例化两个板块的答题系统 ------------------
+        let HistoryQuiz, CraftQuiz;
+        window.onload = function() {
+            HistoryQuiz = new NonFactorQuiz(historyQuestions, 'history-quiz-root', 'h');
+            CraftQuiz = new NonFactorQuiz(craftQuestions, 'craft-quiz-root', 'c');
+            
+            HistoryQuiz.init();
+            CraftQuiz.init();
+        };
+    </script>
+</body>
+</html>
